@@ -61,12 +61,27 @@ chinese_numbers = {
         8: "팔",
         9: "구"
     },
-    10: {
-        1: "",
-        2: "십",
-        3: "백",
-        4: "천",
-        5: "만"
+    2: {
+        0: "",
+        1: "십",
+        2: "백",
+        3: "천",
+        4: "만",
+        5: "십",
+        6: "백",
+        7: "천",
+        8: "억",
+        9: "십",
+        10: "백",
+        11: "천",
+        12: "조",
+        13: "십",
+        14: "백",
+        15: "천",
+        16: "경",
+        17: "십",
+        18: "백",
+        19: "천"
     }
 }
 
@@ -95,13 +110,16 @@ month = {
         "December": "십이월"
 }
 
+quit = ["QUIT", "quit", "Quit", "q", "Q"] # inputs accepted to return to menu
+
 stop_practice = False
 def pure():
     print("Type 'QUIT' to return to menu.")
-    quit = ["QUIT", "quit", "Quit"]
+    myMin = int(input("Enter min number (min: 1): "))
+    myMax = int(input("Enter max number (max 99) : "))
     answer = 0
     while answer not in quit:
-        randomNo = randint(1,100)
+        randomNo = randint(myMin,myMax)
         tensDigit = randomNo // 10
         onesDigit = randomNo % 10
         print(randomNo)
@@ -109,32 +127,54 @@ def pure():
         if answer not in quit:
             print(korean_numbers[10][tensDigit] + korean_numbers[1][onesDigit])
             print("-----")
-
+"""
 def sino():
     print("Type 'QUIT' to return to menu.")
-    quit = ["QUIT", "quit", "Quit"]
+    myMin = int(input("Enter min number (min: 1): "))
+    myMax = int(input("Enter max number (max 9999999999999999999) : "))
     answer = 0
     while answer not in quit:
-        randomNo = randint(1, 999)
-        hunDigit = randomNo // 100
-        hunPlace = hunDigit*100
-        tensDigit = (randomNo - hunPlace) // 10
-        tensPlace = tensDigit*10
-        onesDigit = randomNo - hunPlace - tensPlace
+        out = ""
+        randomNo = randint(myMin, myMax) # getting a random number
         print(randomNo)
         answer = input()
         if answer not in quit:
-            if tensPlace == 10:
-                tensDigit = 0 # 일 isn't used for numbers 10-19
-            output = chinese_numbers[1][hunDigit] + chinese_numbers[10][len(str(hunPlace))] + chinese_numbers[1][tensDigit]+ chinese_numbers[10][len(str(tensPlace))] + chinese_numbers[1][onesDigit]
+            for i in range(19, -1, -1):
+                one = 1
+                digit = randomNo // 10**i
+                digitPlace = digit * 10**i
+                randomNo -= digitPlace # removing first digit
+                if digit == 1:
+                     one = 0 # 일 is not used for numbers in from of 10, 100 etc.
+                if bool(digit): # only add to output if digit is not zero
+                    out += chinese_numbers[1][digit*one] + chinese_numbers[10][i] #+ chinese_numbers[1][tensDigit]+ chinese_numbers[10][len(str(tensPlace))] + chinese_numbers[1][onesDigit]
+            print(out)
+            print("-----")"""
+
+def sino():
+    print("Type 'QUIT' to return to menu.")
+    myMin = int(input("Enter min number (min: 1): "))
+    myMax = int(input("Enter max number (max 9999999999999999999) : "))
+    answer = 0
+    while answer not in quit:
+        out = ""
+        randomNo = randint(myMin, myMax) # getting a random number
+        print(randomNo)
+        answer = input()
+        if answer not in quit:
+            for i in range(len(str(myMin))-1, len(str(myMax))):
+                one = 1
+                digit = randomNo % 10 # finds the final digit
+                randomNo = randomNo // 10 # removes final digit
+                if digit == 1:
+                     one = 0 # 일 is not used for numbers in from of 10, 100 etc.
+                if bool(digit): # only add to output if digit is not zero
+                    out = chinese_numbers[1][digit*one] + chinese_numbers[2][i] + out
             print(out)
             print("-----")
 
-
-
 def weekDays():
     print("Type 'QUIT' to return to menu.")
-    quit = ["QUIT", "quit", "Quit"]
     answer = 0
     while answer not in quit:
         randomNo = randint(0, 6)
@@ -143,12 +183,11 @@ def weekDays():
         answer = input()
         if answer not in quit:
             print(week_days[test])
-            print("-----")
+            print("---------------")
 
 
 def months():
     print("Type 'QUIT' to return to menu.")
-    quit = ["QUIT", "quit", "Quit"]
     answer = 0
     while answer not in quit:
         randomNo = randint(0, 11)
